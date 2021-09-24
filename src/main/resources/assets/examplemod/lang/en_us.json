@@ -1,0 +1,19 @@
+{
+  "item.examplemod.structuregel": "Structure Gel",
+  "item.examplemod.gelore": "Gel Ore",
+  "item.examplemod.gelaxe": "Gel Axe",
+  "item.examplemod.gelsword": "Gel Sword",
+  "item.examplemod.gelpickaxe": "Gel Pickaxe",
+  "item.examplemod.teleportrod": "Teleport Rod",
+  "item.examplemod.lightninghammer": "Lightning Hammer",
+  "item.examplemod.bombarrow": "Bomb Arrow",
+  "item.examplemod.yummyfood": "Yummy Food",
+  "item.examplemod.custom_helm": "Custom Helm",
+  "item.examplemod.custom_chest": "Custom Chest",
+  "item.examplemod.custom_legs": "Custom Legs",
+  "item.examplemod.custom_boots": "Custom Boots",
+  "block.examplemod.castlewall": "Castle Wall",
+  "block.examplemod.tntcannon": "TNT Cannon",
+  "block.examplemod.rubber": "Rubber Block"
+
+}
