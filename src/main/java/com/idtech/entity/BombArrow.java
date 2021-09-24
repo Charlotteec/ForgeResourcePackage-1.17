@@ -15,25 +15,18 @@ import net.minecraft.world.phys.Vec3;
 
 public class BombArrow extends AbstractArrow {
 
-    public BombArrow(EntityType<? extends Arrow> type, Level level) {
-        super(type, level);
-    }
-
-    public BombArrow(Level level, double x, double y, double z) {
-        super(EntityType.ARROW, x, y, z, level);
-    }
-
     public BombArrow(Level p_36866_, LivingEntity p_36867_) {
         super(EntityType.ARROW, p_36867_, p_36866_);
     }
 
-
+    //the item that gets picked up
     @Override
     protected ItemStack getPickupItem() {
         return new ItemStack(BombArrowItem.INSTANCE);
     }
 
-
+    // have to use a count to make sure the explosion doesnt just keep happening - in 1.16.1 there IS a function that only
+    // runs once but for some reason this one doesnt work that way idk this works but there might be a cleaner way to do it.
     int count = 0;
     @Override
     protected void onHit(HitResult hitResult) {

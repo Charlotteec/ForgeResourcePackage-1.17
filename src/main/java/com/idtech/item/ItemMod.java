@@ -26,7 +26,7 @@ public class ItemMod {
     public static FoodProperties yummyFood = (new FoodProperties.Builder().nutrition(5).saturationMod(1.4f).effect(new MobEffectInstance(MobEffects.HEALTH_BOOST, 500, 1), 1.0f).effect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 400, 1), 1.0F).alwaysEat().build());
     public static Item yummyFoodItem = ItemUtils.buildFoodItem("yummyfood", yummyFood);
 
-
+// also experimenting with the tier
 //    public static Tier GEL_TIER = new ForgeTier(4, 1000, 25.0F, 10.0F, 10, null, ()->{return Ingredient.of(ItemMod.STRUCTURE_GEL);});
 
     @SubscribeEvent

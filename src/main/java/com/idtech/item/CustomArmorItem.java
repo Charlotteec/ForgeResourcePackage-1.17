@@ -11,19 +11,22 @@ import javax.annotation.Nullable;
 
 public class CustomArmorItem extends ArmorItem {
 
+//creating a custom armor material - this is almost identical to the old way
     private static ArmorMaterial customMaterial = ItemUtils.buildArmorMaterial("gelore", 22, new int[]{10,10,10,10} ,5,
             SoundEvents.ARMOR_EQUIP_IRON, 4.0f, 0.3f,"examplemod:gelore");
 
+    //create instances for each piece of armor
     public static final Item CUSTOM_HELM = new CustomArmorItem(customMaterial, EquipmentSlot.HEAD, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)).setRegistryName(BaseMod.MODID, "custom_helm");
     public static final Item CUSTOM_CHEST = new CustomArmorItem(customMaterial, EquipmentSlot.CHEST, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)).setRegistryName(BaseMod.MODID, "custom_chest");
     public static final Item CUSTOM_LEGS = new CustomArmorItem(customMaterial, EquipmentSlot.LEGS, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)).setRegistryName(BaseMod.MODID, "custom_legs");
     public static final Item CUSTOM_BOOTS = new CustomArmorItem(customMaterial, EquipmentSlot.FEET, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)).setRegistryName(BaseMod.MODID, "custom_boots");
 
-
+//constructor
     public CustomArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
         super(material, slot, properties);
     }
 
+    //same as always
     @Nullable
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {

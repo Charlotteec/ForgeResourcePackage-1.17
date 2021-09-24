@@ -18,16 +18,14 @@ import net.minecraftforge.fml.common.Mod;
 public class BlockMod {
 
     //Basic Block
-
     public static final Block CASTLE_WALL = BlockUtils.createBasicBlock("castlewall", Material.STONE);
     public static final Item CASTLE_WALL_ITEM = BlockUtils.createBlockItem(CASTLE_WALL, CreativeModeTab.TAB_MISC);
 
+    //ores must also be added to the tags file so that they can be harvested with the correct tool
+    // might make sense to make a method in blockutils to make this process simpler but idk
     public static final Block GEL_ORE_BLOCK =
             new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F))
                     .setRegistryName(BaseMod.MODID, "geloreblock");
-//    .requiresCorrectToolForDrops().strength(3.0F, 3.0F)
-
-    //public static final Block GEL_ORE = BlockUtils.createBasicBlock("geloreblock", Material.STONE);
     public static final Item GEL_ORE_ITEM = BlockUtils.createBlockItem(GEL_ORE_BLOCK, CreativeModeTab.TAB_MISC);
 
     @SubscribeEvent

@@ -7,8 +7,9 @@ import net.minecraftforge.common.ForgeTier;
 import net.minecraftforge.common.Tags;
 
 public class GelAxeItem extends AxeItem {
-
-
+    //Tiers are completely different - this works but I Do think theres some weird stuff with the rank and tags that I also haven't quite sussed out yet.
+    // If you wanna test what changing the level does for this and if it actually changes what blocks can be broken
+    // also this is related to the ore theres something funky goin.
     public static Tier tier = new ForgeTier(5, 1000, 25.0F, 10.0F, 10, null, ()->{return Ingredient.of(ItemMod.STRUCTURE_GEL);});
     public static Item INSTANCE = new GelAxeItem(tier,100, 100, new Properties().tab(CreativeModeTab.TAB_TOOLS)).setRegistryName(BaseMod.MODID,"gelaxe");
 

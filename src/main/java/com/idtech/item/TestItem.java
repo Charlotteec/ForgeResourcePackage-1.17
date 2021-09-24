@@ -11,6 +11,8 @@ import net.minecraft.world.level.Level;
 
 public class TestItem extends Item {
 
+    //THIS Is just a dummy item idk where i was going and i dont think its registered
+
     //static instance for registration
     private static Properties properties = new Properties().tab(CreativeModeTab.TAB_MISC);
     public static Item INSTANCE = new TestItem(properties).setRegistryName("testitem");

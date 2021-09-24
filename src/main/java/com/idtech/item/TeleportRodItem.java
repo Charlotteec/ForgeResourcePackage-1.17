@@ -23,7 +23,7 @@ public class TeleportRodItem extends Item {
 
     }
 
-    //onrightclick
+    //onrightclick is use now i dont make the rules
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player playerIn, InteractionHand handIn) {
         //get the held item for return

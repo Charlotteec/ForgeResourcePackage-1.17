@@ -36,6 +36,7 @@ public class GrumboBoy extends Zombie {
         this(TYPE, level);
     }
 
+    // We are getting rid of the EntityUtils method since stuff is named now i think this is pretty easy to understand!
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.FOLLOW_RANGE, 35.0D)
@@ -45,6 +46,7 @@ public class GrumboBoy extends Zombie {
                 .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
     }
 
+    //idk what the difference is here we can probably just make it all one function this is just how it is in the zombie code probably
     protected void registerGoals() {
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));

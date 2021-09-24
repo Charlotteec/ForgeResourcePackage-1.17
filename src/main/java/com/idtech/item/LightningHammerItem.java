@@ -27,7 +27,7 @@ public class LightningHammerItem extends Item {
 
     }
 
-    //onrightclick
+    //onrightclick is now use idk u guys this is how it be
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player playerIn, InteractionHand handIn) {
         //get the held item for return
@@ -37,14 +37,14 @@ public class LightningHammerItem extends Item {
         BlockPos location = Utils.getBlockAtCursor(playerIn, 200.0d, true);
 
         //decide the size of the explosion
-        float explosionRadius = 0.5f;
+        float explosionRadius = 10.0f;
 
         //as long as the location exists
         if(location != null){
 
             //create an explosion
             //level.explode(playerIn, location.getX(), location.getY(), location.getZ(), explosionRadius, Explosion.BlockInteraction.BREAK);
-            Utils.createExplosion(level, location, 10.0f);
+            Utils.createExplosion(level, location, explosionRadius);
             //strike lightning
             Utils.strikeLightning(level, location);
 

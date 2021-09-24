@@ -25,8 +25,7 @@ public class CreepingMoldBlock extends Block {
 
     }
 
-
-
+//this is just marked deprecated for no reason idk u gotta love minecraft devs
     @Override
     public void randomTick (BlockState blockState, ServerLevel serverLevel, BlockPos pos, Random random){
         super.randomTick(blockState, serverLevel, pos, random);
