@@ -30,14 +30,12 @@ public class TeleportRodItem extends Item {
         ItemStack itemstack = playerIn.getItemInHand(handIn);
 
         BlockPos blockPos = Utils.getBlockAtCursor(playerIn, 1000.0d, true);
-//        if (playerIn instanceof ServerPlayer) {
-//            ServerPlayer serverplayer = (ServerPlayer) playerIn;
+
            if (blockPos != null){//&& serverplayer.connection.getConnection().isConnected() && serverplayer.level == level && !serverplayer.isSleeping()) {
                 playerIn.teleportTo(blockPos.getX(), blockPos.getY(), blockPos.getZ());
                 playerIn.fallDistance = 0.0F;
           }
 
-//        }
         return InteractionResultHolder.pass(itemstack);
     }
 }

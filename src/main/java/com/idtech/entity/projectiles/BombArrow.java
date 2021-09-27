@@ -1,4 +1,4 @@
-package com.idtech.entity;
+package com.idtech.entity.projectiles;
 
 import com.idtech.item.BombArrowItem;
 import net.minecraft.core.BlockPos;
