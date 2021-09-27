@@ -39,21 +39,35 @@ import java.util.Collection;
 import java.util.List;
 
 public class WorldUtils {
-    //
+
+    /**
+     * Function copy-pasted from VanillaBiomes to help calculate sky color of biomes.
+     * @param skyColor a float indicating the skycolor
+     * @return a rgb sky color
+     */
     public static int calculateSkyColor(float skyColor) {
         float f = skyColor / 3.0F;
         f = Mth.clamp(f, -1.0F, 1.0F);
         return Mth.hsvToRgb(0.62222224F - f * 0.05F, 0.5F + f * 0.1F, 1.0F);
     }
 
-    /*
-    This is a function to help students create a biome
-    You will need to create a mobspawnsettings builder and a biomegenerationsettings builder
-    These will be used to add decorations and spawn creatures in your biome.
-    The rest of the biome settings can just be arguments in this function.
-    Look into the VanillaBiomes class for more information on how all this works and examples of how things are done.
+    /**
+     * Function to help create biomes more easily. Look into the VanillaBiomes class for more information on how all this works and examples of how things are done.
+     * @param category the category of the biome to be created
+     * @param topLayer the top layer of the biome (usually just one block tall)
+     * @param secondLayer the second layer of the biome (usually a few blocks tall)
+     * @param thirdLayer the third layer of the biome
+     * @param mobspawnsettings$builder a mob spawn settings builder used to add spawners. You will instantiate this when you create the biome instance in WorldMod
+     * @param biomegenerationsettings$builder a biom generation settings builder used to add spawners. You will instantiate this when you create the biome instance in WorldMod
+     * @param depth the depth of the biome (how tall it is)
+     * @param scale the scale of the biome (how big mountains can be)
+     * @param temp the temperature (has to do with what can grow etc)
+     * @param downfall what kind of weather the biome will have
+     * @param waterColor the color of the water in the biome.
+     * @return A built biome with all the parameters set and any additional mandatory parameters taken care of
      */
-    public static Biome baseBiome(Biome.BiomeCategory category, BlockState topLayer, BlockState secondLayer, BlockState thirdLayer, MobSpawnSettings.Builder mobspawnsettings$builder, BiomeGenerationSettings.Builder biomegenerationsettings$builder, float depth, float scale, float temp, float downfall, int waterColor, float skyColor) {
+
+    public static Biome baseBiome(Biome.BiomeCategory category, BlockState topLayer, BlockState secondLayer, BlockState thirdLayer, MobSpawnSettings.Builder mobspawnsettings$builder, BiomeGenerationSettings.Builder biomegenerationsettings$builder, float depth, float scale, float temp, float downfall, int waterColor) {
         //in 1.17 you have to create this surface configuration to set the blocks but its sort of nedlessly complicated so we will take care of that here.
         SurfaceBuilderBaseConfiguration surface = new SurfaceBuilderBaseConfiguration(topLayer, secondLayer, thirdLayer);
         biomegenerationsettings$builder.surfaceBuilder(SurfaceBuilder.DEFAULT.configured(surface));
@@ -70,20 +84,23 @@ public class WorldUtils {
                         .waterColor(waterColor)
                         .waterFogColor(waterColor)
                         .fogColor(waterColor)
-                        .skyColor(WorldUtils.calculateSkyColor(skyColor))
+                        .skyColor(WorldUtils.calculateSkyColor(0.5f))
                         .build())
                 .mobSpawnSettings(mobspawnsettings$builder.build())
                 .generationSettings(biomegenerationsettings$builder.build())
                 .build();
     }
 
-
-    private static Collection<Biome> biomes;
-
-    private static void loadAllBiomes() {
-        biomes = ForgeRegistries.BIOMES.getValues();
-    }
-
+    /**
+     * Method to be used in biome loading event to generate an ores in all biomes
+     * @param category category of biome from loading event
+     * @param builder builder of biome from loading event
+     * @param blockstate the block/ore that is being added
+     * @param veinSize how many blocks should be generated at a time
+     * @param bottom lowest block to start vein at
+     * @param top highest block to start vein at
+     * @param count amount of total blocks in area (??)
+     */
     public static void genOreInAllBiomes(Biome.BiomeCategory category, BiomeGenerationSettings.Builder builder, BlockState blockstate, int veinSize, int bottom, int top, int count) {
 
         if (category != Biome.BiomeCategory.THEEND && category != Biome.BiomeCategory.NETHER) {
@@ -92,10 +109,33 @@ public class WorldUtils {
 
     }
 
+    /**
+     * Method to be used in biome loading event to generate an ore in a list of biomes
+     * @param category category of biome from loading event
+     * @param builder builder of biome from loading event
+     * @param blockstate the block/ore that is being added
+     * @param veinSize how many blocks should be generated at a time
+     * @param bottom lowest block to start vein at
+     * @param top highest block to start vein at
+     * @param count amount of total blocks in area (??)
+     * @param biomeCategories categories of biomes to be generated in
+     */
     public static void genOreInBiomes(Biome.BiomeCategory category, BiomeGenerationSettings.Builder builder, BlockState blockstate, int veinSize, int bottom, int top, int count, Biome.BiomeCategory...biomeCategories) {
         List<Biome.BiomeCategory> biomeList = Arrays.asList(biomeCategories);
         genOreInBiomes(category, builder, blockstate, veinSize, bottom, top, count, biomeList);
     }
+
+    /**
+     * Private method used internally to help generate an ore in a list of biomes
+     * @param category the category of the biome being added
+     * @param builder the builder of the biome
+     * @param blockstate the block/ore that is being added
+     * @param veinSize how many blocks should be generated at a time
+     * @param bottom lowest block to start vein at
+     * @param top highest block to start vein at
+     * @param count amount of total blocks in area (??)
+     * @param biomeCategories categories of biomes to be generated in
+     */
     private static void genOreInBiomes(Biome.BiomeCategory category, BiomeGenerationSettings.Builder builder, BlockState blockstate, int veinSize, int bottom, int top, int count, List<Biome.BiomeCategory> biomeCategories) {
 
         biomeCategories.forEach(cat -> {
@@ -104,102 +144,67 @@ public class WorldUtils {
             }
         });
     }
+    /**
+     * Method to be used in a biome loading event to generate an ore in all biomes except a list of biomes
+     * @param category the category of the biome being added
+     * @param builder the builder of the biome
+     * @param blockstate the block/ore that is being added
+     * @param veinSize how many blocks should be generated at a time
+     * @param bottom lowest block to start vein at
+     * @param top highest block to start vein at
+     * @param count amount of total blocks in area (??)
+     * @param biomeCategories categories of biomes to NOT be generated in
+     */
     public static void genOreInBiomesExcept(Biome.BiomeCategory category, BiomeGenerationSettings.Builder builder, BlockState blockstate, int veinSize, int bottom, int top, int count, Biome.BiomeCategory...biomeCategories) {
         List<Biome.BiomeCategory> biomeList = Arrays.asList(biomeCategories);
         genOreInBiomesExcept(category, builder, blockstate, veinSize, bottom, top, count, biomeList);
     }
+
+    /**
+     * Private method used internally to help generate an ore in all biomes except a list of biomes
+     * @param category the category of the biome being added
+     * @param builder the builder of the biome
+     * @param blockstate the block/ore that is being added
+     * @param veinSize how many blocks should be generated at a time
+     * @param bottom lowest block to start vein at
+     * @param top highest block to start vein at
+     * @param count amount of total blocks in area (??)
+     * @param biomeCategories categories of biomes to NOT be generated in
+     */
     private static void genOreInBiomesExcept(Biome.BiomeCategory category, BiomeGenerationSettings.Builder builder, BlockState blockstate, int veinSize, int bottom, int top, int count, List<Biome.BiomeCategory> biomeCategories) {
-//        for (Biome biome : ForgeRegistries.BIOMES) {
-            // No end/nether generation
             if (!biomeCategories.contains(category)) {     //conditional only permits overworld spawning
                 genOre(builder, blockstate, veinSize, bottom, top, count);
             }
 //        }
     }
 
+    /**
+     * Method used to generate an ore in a biome.
+     * @param builder the builder of the biome
+     * @param blockstate the block/ore that is being added
+     * @param veinSize how many blocks should be generated at a time
+     * @param bottom lowest block to start vein at
+     * @param top highest block to start vein at
+     * @param count amount of total blocks in area (??)
+     */
     private static void genOre(BiomeGenerationSettings.Builder builder, BlockState blockstate, int veinSize, int bottom, int top, int count) {
         ConfiguredFeature<?,?> feature = makeFeature(blockstate, veinSize, bottom, top, count);
         GenerationStep.Decoration genStep = GenerationStep.Decoration.UNDERGROUND_ORES;
         builder.addFeature(genStep, feature);
     }
 
+    /**
+     * Method to create a custom ore feature to be used in ore generation
+     * @param blockstate the block/ore that is being added
+     * @param veinSize how many blocks should be generated at a time
+     * @param bottom lowest block to start vein at
+     * @param top highest block to start vein at
+     * @param count amount of total blocks in area (??)
+     * @return the ConfiguredFeature ore configuration so that it can be used in other methods.
+     */
     private static ConfiguredFeature<?,?> makeFeature(BlockState blockstate, int veinSize, int bottom, int top, int count){
         ConfiguredFeature<?, ?> ORE_CANDIANITE = (Feature.ORE.configured(new OreConfiguration(OreConfiguration.Predicates.STONE_ORE_REPLACEABLES, blockstate, veinSize))).rangeUniform(VerticalAnchor.absolute(bottom), VerticalAnchor.absolute(top)).squared().count(count);
         return ORE_CANDIANITE;
     }
 }
 
-
-//    public static void generateOres(FMLLoadCompleteEvent event) {
-//        for (Biome biome : ForgeRegistries.BIOMES) {    //for all biomes, including modded biomes
-//
-//        }
-//    }
-
-//
-//    /**
-//     * Generates ore in select biomes
-//     * @param block        The ore
-//     * @param rangeConfig  CountRangeConfig object that has: number of veins, offset from bottom of biome (y=0), offset from top of biome, and max height above bottomOffset
-//     * @param veinSize     Size of vein
-//     * @param biomes       List of biomes to generate ore in. This is a parameter list, each biome is a seperate parameter (ex: genOreInBiomes(..., Biomes.HILLS, Biomes.GRASSLANDS))
-//     */
-//    private static void genOreInBiomes(BlockState block, CountRangeConfig rangeConfig, int veinSize, Biome... biomes) {
-//        List<Biome> biomeList = Arrays.asList(biomes);
-//        genOreInBiomes(block, rangeConfig, veinSize, biomeList);
-//    }
-//
-//    /**
-//     * Generates ore in select biomes
-//     * @param block        The ore
-//     * @param rangeConfig  CountRangeConfig object that has: number of veins, offset from bottom of biome (y=0), offset from top of biome, and max height above bottomOffset
-//     * @param veinSize     Size of vein
-//     * @param biomes       List of biomes to generate ore in.
-//     */
-//    private static void genOreInBiomes(BlockState block, CountRangeConfig rangeConfig, int veinSize, List<Biome> biomes) {
-//        biomes.forEach(biome -> {
-//            genOre(biome, rangeConfig, OreFeatureConfig.FillerBlockType.NATURAL_STONE, block, veinSize);
-//        });
-//    }
-//
-//    /**
-//     * Generates ore except in select biomes
-//     * @param block        The ore
-//     * @param rangeConfig  CountRangeConfig object that has: number of veins, offset from bottom of biome (y=0), offset from top of biome, and max height above bottomOffset
-//     * @param veinSize     Size of vein
-//     * @param biomes       List of biomes to generate ore in. This is a parameter list, each biome is a seperate parameter (ex: genOreInBiomes(..., Biomes.HILLS, Biomes.GRASSLANDS))
-//     */
-//    private static void genOreInBiomesExcept(BlockState block, CountRangeConfig rangeConfig, int veinSize, Biome... biomes) {
-//        List<Biome> biomeList = Arrays.asList(biomes);
-//        genOreInBiomesExcept(block, rangeConfig, veinSize, biomeList);
-//    }
-//
-//    /**
-//     * Generates ore except in select biomes
-//     * @param block        The ore
-//     * @param rangeConfig  CountRangeConfig object that has: number of veins, offset from bottom of biome (y=0), offset from top of biome, and max height above bottomOffset
-//     * @param veinSize     Size of vein
-//     * @param biomes       List of biomes to generate ore in.
-//     */
-//    private static void genOreInBiomesExcept(BlockState block, CountRangeConfig rangeConfig, int veinSize, List<Biome> biomes) {
-//        for (Biome biome : ForgeRegistries.BIOMES) {
-//            // No end/nether generation
-//            if (!biomes.contains(biome)) {     //conditional only permits overworld spawning
-//                genOre(biome, rangeConfig, OreFeatureConfig.FillerBlockType.NATURAL_STONE, block, veinSize);
-//            }
-//        }
-//    }
-//
-//    /** genOre Method creates ore chunks that are added to a biome
-//     * @param biome                 The biome to add ore to
-//     * @param cfg                   CountRangeConfig object that has: number of veins, offset from bottom of biome (y=0), offset from top of biome, and max height above bottomOffset
-//     * @param filler                Block type for all blocks surrounding vein
-//     * @param defaultBlockstate     Block that is being generated
-//     * @param size                  Size of vein
-//     */
-//    private static void genOre(Biome biome, CountRangeConfig cfg, OreFeatureConfig.FillerBlockType filler, BlockState defaultBlockstate, int size) {
-//        OreFeature feature = new OreFeature(filler, defaultBlockstate, size);   //sets vein as a feature to add
-//        ConfiguredPlacement config = Placement.COUNT_RANGE.configure(cfg);                  //configures feature placement using CountRangeConfig values
-//        biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(feature).withPlacement(config));    // adds configured feature to biome
-//    }
-//}

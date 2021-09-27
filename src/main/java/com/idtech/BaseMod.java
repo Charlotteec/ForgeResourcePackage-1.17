@@ -135,20 +135,7 @@ public class BaseMod {
             EntityMod.registerEntityEggs(event);
 
         }
-//
-//        /**
-//         * Registers item during mod setup
-//         *
-//         * @param event RegistryEvent to access the item registry
-//         */
-//        @SubscribeEvent
-//        public static void registerTiers(final TierSortingRegistry.registerTiers event) {
-//            LOGGER.info("Registering Items");
-            // Add item registry calls here.
-            // event.getRegistry.register(<item variable>)
-//
-//            TierSortingRegistry.registerTier(ModTiers.CUSTOM1, new ResourceLocation(Main.MODID, "custom1"), List.of(Tiers.NETHERITE), List.of());
-//        }
+
 
         /**
          * Registers entities during mod setup
@@ -186,31 +173,5 @@ public class BaseMod {
 
     }
 }
-//    /**
-//     * Client-side setup - register renderers here.
-//     * @param event event variable with client setup info
-//     */
-//    @SubscribeEvent
-//    public static void clientSetup(FMLClientSetupEvent event){
-//        BaseMod.LOGGER.info("Client Setup Step");
-//        // Add rendering registry entries here.
-//        // RenderingRegistry.registerEntityRenderingHandler(<entity type>, <render factory>);
-//        EntityMod.entityRenderers();
-//
-//    }
-
-
-
-//    /**
-//     * Adds an entity to the spawn list for a biome
-//     * @param type the type of entity to add to the list
-//     */
-//    public static void addSpawn (EntityType type) {
-//        for(Biome b : ForgeRegistries.BIOMES){
-//            if( b != null){
-//                b.func_235058_a_(type);
-//            }
-//        }
-//    }
 
 

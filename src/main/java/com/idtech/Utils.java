@@ -27,7 +27,6 @@ import javax.sound.sampled.Clip;
  * Utilities to use with block, item and entities to simplify some functionality
  */
 public class Utils {
-    //protected static Random random;
 
     /**
      * Strikes a location with lightning
@@ -56,12 +55,15 @@ public class Utils {
        // level.explode()
     }
 
-//    /**
-//     * Spawn an entity in the world
-//     * @param world world to spawn the entity in
-//     * @param type entity type to spawn. Access vanilla entities with 'EntityType.' constants
-//     * @param location block position to spawn at
-//     */
+    /**
+     * Method to spawn an entity into the world. Use after creating an Entity object to add as a parameter for this method.
+     * e.g: Cow cow = new Cow();
+     *      spwanEntity(level, cow, location);
+     * @param level the world in which we are spawning
+     * @param entity an entity object that will be spawned
+     * @param location the location in which the entity should be spawned.
+     * @return the entity that has been spawned
+     */
     public static Entity spawnEntity(Level level, Entity entity, BlockPos location){
 
         entity.setPos(location.getX(), location.getY(), location.getZ());

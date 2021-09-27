@@ -54,7 +54,7 @@ public class CustomBiomes {
                 Blocks.PINK_WOOL.defaultBlockState(),
                 Blocks.PINK_WOOL.defaultBlockState(),
                 mobspawnsettings$builder, biomegenerationsettings$builder,
-                0.8f, 1.0f, 0.7f, 0.6f, 550204, 0.7F);
+                0.8f, 1.0f, 0.7f, 0.6f, 550204);
     }
 }
 

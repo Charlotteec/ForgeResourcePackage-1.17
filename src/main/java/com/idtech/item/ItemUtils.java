@@ -37,7 +37,6 @@ public class ItemUtils {
         return new Item(new Item.Properties().tab(group)).setRegistryName(BaseMod.MODID, name);
     }
 
-//   public static final FoodProperties APPLE = (new FoodProperties.Builder()).nutrition(4).saturationMod(0.3F).build();
     /**
      * Create a new food item to register a food and have it appear in the game
      * @param name the name of the food item for registry and textures
@@ -89,6 +88,18 @@ public class ItemUtils {
 
     }
 
+    /**
+     * Builds a new custom armor material. Modelled exactly after Vanilla Mincraft armor material code.
+     * @param nameIn name of the material
+     * @param maxDamageFactorIn the maximum damage for the armor
+     * @param damageReductionAmountArrayIn the damage reduction that each piece of armor does in an array. In order helm, chest, legs, boots.
+     * @param enchantabilityIn the enchantability factor of the armor.
+     * @param eqiupSoundIn the sound that the armor makes when being equipped
+     * @param toughnessIn any additional toughness of the armor
+     * @param knockbackResistanceIn additional knockback resistance in the armor
+     * @param repairIngredientIn ingredient used to repair the armor.
+     * @return
+     */
     private static ArmorMaterial buildArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountArrayIn, int enchantabilityIn, SoundEvent eqiupSoundIn,
                                                      float toughnessIn, float knockbackResistanceIn, Supplier<Ingredient> repairIngredientIn) {
 
