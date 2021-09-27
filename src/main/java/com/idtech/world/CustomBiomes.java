@@ -43,6 +43,7 @@ public class CustomBiomes {
         biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.FLOWER_FOREST);
         biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.DARK_FOREST_VEGETATION_RED);
         biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, Features.GLOWSTONE_EXTRA);
+
         biomegenerationsettings$builder.addStructureStart(StructureFeatures.MINESHAFT);
 
         //this uses a base biome to set up some of the general stuff and to avoid making this extra confusing.

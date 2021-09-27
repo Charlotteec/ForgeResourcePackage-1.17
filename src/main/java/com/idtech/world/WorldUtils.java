@@ -1,17 +1,42 @@
 package com.idtech.world;
 
+import com.google.common.collect.ImmutableList;
+import com.idtech.BaseMod;
+import com.idtech.block.BlockMod;
+import net.minecraft.data.worldgen.Features;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.OreFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.lwjgl.system.CallbackI;
 
+import java.sql.Struct;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class WorldUtils {
     //
@@ -26,7 +51,7 @@ public class WorldUtils {
     You will need to create a mobspawnsettings builder and a biomegenerationsettings builder
     These will be used to add decorations and spawn creatures in your biome.
     The rest of the biome settings can just be arguments in this function.
-    Look into the VanillaBiomes class for more information on how all this works and examples of how things work.
+    Look into the VanillaBiomes class for more information on how all this works and examples of how things are done.
      */
     public static Biome baseBiome(Biome.BiomeCategory category, BlockState topLayer, BlockState secondLayer, BlockState thirdLayer, MobSpawnSettings.Builder mobspawnsettings$builder, BiomeGenerationSettings.Builder biomegenerationsettings$builder, float depth, float scale, float temp, float downfall, int waterColor, float skyColor) {
         //in 1.17 you have to create this surface configuration to set the blocks but its sort of nedlessly complicated so we will take care of that here.
@@ -58,28 +83,50 @@ public class WorldUtils {
     private static void loadAllBiomes() {
         biomes = ForgeRegistries.BIOMES.getValues();
     }
-//    public static final ConfiguredFeature<?, ?> ORE_CANDIANITE = register("ore_candianite", Feature.ORE.configured(new OreConfiguration(OreConfiguration.Predicates.STONE_ORE_REPLACEABLES, BlockStates.CANDIANITE_ORE, 9)).rangeUniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(63))).squared().count(20);
 
-    public static void generateOres(FMLLoadCompleteEvent event) {
-        for (Biome biome : ForgeRegistries.BIOMES) {    //for all biomes, including modded biomes
+    public static void genOreInAllBiomes(Biome.BiomeCategory category, BiomeGenerationSettings.Builder builder, BlockState blockstate, int veinSize, int bottom, int top, int count) {
 
+        if (category != Biome.BiomeCategory.THEEND && category != Biome.BiomeCategory.NETHER) {
+            genOre(builder, blockstate, veinSize, bottom, top, count);
         }
+
     }
 
-//    public static void addOres(BiomeGenerationSettings.Builder builder, Biome.BiomeCategory biomeCategory) {
-//        int genOreStep = GenerationStep.Decoration.UNDERGROUND_ORES.ordinal();
-//        if (biomeCategory == Biome.BiomeCategory.PLAINS) {
-//            builder.addFeature(genOreStep, () -> );
-//        }
-//        builder.addFeature(genOreStep, () -> PA_ConfiguredFeatures.ORE_RAINBOW);
-//
-//    }
-   /* private static void genOre(Biome biome, CountRangeConfig cfg, OreFeatureConfig.FillerBlockType filler, BlockState defaultBlockstate, int size) {
-        OreFeature feature = new OreFeature(filler, defaultBlockstate, size);   //sets vein as a feature to add
-        ConfiguredFeature config =      ;             //configures feature placement using CountRangeConfig values
-        biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(feature).withPlacement(config));    // adds configured feature to biome
+    public static void genOreInBiomes(Biome.BiomeCategory category, BiomeGenerationSettings.Builder builder, BlockState blockstate, int veinSize, int bottom, int top, int count, Biome.BiomeCategory...biomeCategories) {
+        List<Biome.BiomeCategory> biomeList = Arrays.asList(biomeCategories);
+        genOreInBiomes(category, builder, blockstate, veinSize, bottom, top, count, biomeList);
     }
-*/
+    private static void genOreInBiomes(Biome.BiomeCategory category, BiomeGenerationSettings.Builder builder, BlockState blockstate, int veinSize, int bottom, int top, int count, List<Biome.BiomeCategory> biomeCategories) {
+
+        biomeCategories.forEach(cat -> {
+            if(category == cat) {
+                genOre(builder, blockstate, veinSize, bottom, top, count);
+            }
+        });
+    }
+    public static void genOreInBiomesExcept(Biome.BiomeCategory category, BiomeGenerationSettings.Builder builder, BlockState blockstate, int veinSize, int bottom, int top, int count, Biome.BiomeCategory...biomeCategories) {
+        List<Biome.BiomeCategory> biomeList = Arrays.asList(biomeCategories);
+        genOreInBiomesExcept(category, builder, blockstate, veinSize, bottom, top, count, biomeList);
+    }
+    private static void genOreInBiomesExcept(Biome.BiomeCategory category, BiomeGenerationSettings.Builder builder, BlockState blockstate, int veinSize, int bottom, int top, int count, List<Biome.BiomeCategory> biomeCategories) {
+//        for (Biome biome : ForgeRegistries.BIOMES) {
+            // No end/nether generation
+            if (!biomeCategories.contains(category)) {     //conditional only permits overworld spawning
+                genOre(builder, blockstate, veinSize, bottom, top, count);
+            }
+//        }
+    }
+
+    private static void genOre(BiomeGenerationSettings.Builder builder, BlockState blockstate, int veinSize, int bottom, int top, int count) {
+        ConfiguredFeature<?,?> feature = makeFeature(blockstate, veinSize, bottom, top, count);
+        GenerationStep.Decoration genStep = GenerationStep.Decoration.UNDERGROUND_ORES;
+        builder.addFeature(genStep, feature);
+    }
+
+    private static ConfiguredFeature<?,?> makeFeature(BlockState blockstate, int veinSize, int bottom, int top, int count){
+        ConfiguredFeature<?, ?> ORE_CANDIANITE = (Feature.ORE.configured(new OreConfiguration(OreConfiguration.Predicates.STONE_ORE_REPLACEABLES, blockstate, veinSize))).rangeUniform(VerticalAnchor.absolute(bottom), VerticalAnchor.absolute(top)).squared().count(count);
+        return ORE_CANDIANITE;
+    }
 }
 
 
@@ -88,21 +135,7 @@ public class WorldUtils {
 //
 //        }
 //    }
-//
-//    /**
-//     * Generates ore in all biomes
-//     * @param block     The ore
-//     * @param rangeCfg  CountRangeConfig object that has: number of veins, offset from bottom of biome (y=0), offset from top of biome, and max height above bottomOffset
-//     * @param veinSize  Size of vein
-//     */
-//    private static void genOreInAllBiomes(BlockState block, CountRangeConfig rangeCfg, int veinSize) {
-//        for (Biome biome : ForgeRegistries.BIOMES) {
-//            // No end/nether generation
-//            if (biome.getCategory() != Biome.Category.THEEND && biome.getCategory() != Biome.Category.NETHER) {     //conditional only permits overworld spawning
-//                genOre(biome, rangeCfg, OreFeatureConfig.FillerBlockType.NATURAL_STONE, block, veinSize);
-//            }
-//        }
-//    }
+
 //
 //    /**
 //     * Generates ore in select biomes
