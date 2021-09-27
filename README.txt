@@ -1,13 +1,15 @@
 IDTECH INSTALLATION INFORMATION: 
---------------------------------
+=================================================================================================================================
 
 1. Download and install the Oracle Java JDK 1.16 (https://www.oracle.com/java/technologies/javase/jdk16-archive-downloads.html)
-2. Update IntelliJ to the 2021 Community Edition (2019.1.4 doesn't support Java 1.16) 
+2. Update IntelliJ to the 2021 Community Edition (2019.1.4 doesn't support Java 1.16) (https://www.jetbrains.com/idea/download/)
 3. Download this code. Use Open to open the folder in IntelliJ.
 4. Select Java 1.16 as the Project JDK. 
 5. Open the Gradle Tab > Tasks > forgegradle runs.
 6. Run genIntelliJRuns
 7. Run runClient. If Minecraft appears, you are successful. 
+
+=================================================================================================================================
 
 
 Source installation information for modders
