@@ -52,9 +52,5 @@ public class ExplosionProjectile extends ThrowableItemProjectile implements Item
         this.remove(RemovalReason.DISCARDED);
     }
 
-    //used to render projectile
-    public Packet<?> createSpawnPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
 
 }
