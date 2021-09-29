@@ -1,5 +1,6 @@
 package com.idtech.item;
 
+import com.idtech.ModTab;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -19,8 +20,8 @@ import net.minecraftforge.fml.common.Mod;
 public class ItemMod {
 
     //BASIC ITEMS
-    public static final Item STRUCTURE_GEL = ItemUtils.buildBasicItem("structuregel", CreativeModeTab.TAB_MISC);
-    public static final Item GEL_ORE = ItemUtils.buildBasicItem("gelore", CreativeModeTab.TAB_MISC);
+    public static final Item STRUCTURE_GEL = ItemUtils.buildBasicItem("structuregel", ModTab.INSTANCE);
+    public static final Item GEL_ORE = ItemUtils.buildBasicItem("gelore", ModTab.INSTANCE);
 
     //FOODS
     public static FoodProperties yummyFood = (new FoodProperties.Builder().nutrition(5).saturationMod(1.4f).effect(new MobEffectInstance(MobEffects.HEALTH_BOOST, 500, 1), 1.0f).effect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 400, 1), 1.0F).alwaysEat().build());

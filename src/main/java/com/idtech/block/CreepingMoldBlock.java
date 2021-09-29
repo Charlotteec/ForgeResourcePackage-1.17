@@ -1,5 +1,6 @@
 package com.idtech.block;
 import com.idtech.BaseMod;
+import com.idtech.ModTab;
 import com.idtech.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +18,7 @@ public class CreepingMoldBlock extends Block {
     private static Properties properties = Properties.of(Material.STONE).randomTicks();
 
     public static Block INSTANCE = new CreepingMoldBlock(properties).setRegistryName(BaseMod.MODID,"creepingmold");
-    public static Item ITEM = BlockUtils.createBlockItem(INSTANCE, CreativeModeTab.TAB_MISC);
+    public static Item ITEM = BlockUtils.createBlockItem(INSTANCE, ModTab.INSTANCE);
 
     //constructor
     public CreepingMoldBlock(Properties properties){

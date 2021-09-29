@@ -1,5 +1,6 @@
 package com.idtech.item;
 
+import com.idtech.ModTab;
 import com.idtech.entity.projectiles.ExplosionProjectile;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.Level;
 
 public class ExplosionProjectileItem extends Item {
 
-    private static Item.Properties properties = new Properties().tab(CreativeModeTab.TAB_MISC);
+    private static Properties properties = new Properties().tab(ModTab.INSTANCE);
     public static Item INSTANCE = new ExplosionProjectileItem(properties).setRegistryName("explosionitem");
 
     public ExplosionProjectileItem(Properties properties) {

@@ -1,6 +1,7 @@
 package com.idtech.item;
 
 
+import com.idtech.ModTab;
 import com.idtech.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -18,7 +19,7 @@ public class LightningHammerItem extends Item {
 
 
     //static instance for registration
-    private static Properties properties = new Properties().tab(CreativeModeTab.TAB_MISC);
+    private static Properties properties = new Properties().tab(ModTab.INSTANCE);
     public static Item INSTANCE = new LightningHammerItem(properties).setRegistryName("lightninghammer");
 
     //constructor

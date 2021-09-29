@@ -1,6 +1,7 @@
 package com.idtech.block;
 
 import com.idtech.BaseMod;
+import com.idtech.ModTab;
 import com.idtech.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -24,7 +25,7 @@ public class TNTCannonBlock extends Block {
 
     public static Block INSTANCE = new TNTCannonBlock(properties).setRegistryName(BaseMod.MODID,"tntcannon");
 
-    public static Item ITEM = BlockUtils.createBlockItem(INSTANCE, CreativeModeTab.TAB_COMBAT);
+    public static Item ITEM = BlockUtils.createBlockItem(INSTANCE, ModTab.INSTANCE);
 
     public TNTCannonBlock(Properties properties){
         super(properties);

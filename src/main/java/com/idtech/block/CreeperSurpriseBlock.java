@@ -1,6 +1,7 @@
 package com.idtech.block;
 
 import com.idtech.BaseMod;
+import com.idtech.ModTab;
 import com.idtech.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -24,7 +25,7 @@ public class CreeperSurpriseBlock extends Block{
 
     private static Properties properties = Properties.of(Material.STONE);
     public static Block INSTANCE = new CreeperSurpriseBlock(properties).setRegistryName(BaseMod.MODID, "creepersurprise");
-    public static Item ITEM = BlockUtils.createBlockItem(INSTANCE, CreativeModeTab.TAB_MISC);
+    public static Item ITEM = BlockUtils.createBlockItem(INSTANCE, ModTab.INSTANCE);
 
     //constructor
     public CreeperSurpriseBlock(BlockBehaviour.Properties properties) {
