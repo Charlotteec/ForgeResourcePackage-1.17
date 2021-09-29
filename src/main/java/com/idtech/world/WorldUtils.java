@@ -1,12 +1,14 @@
 package com.idtech.world;
 
-import com.google.common.collect.ImmutableList;
+
 import com.idtech.BaseMod;
 import com.idtech.block.BlockMod;
 import net.minecraft.data.worldgen.Features;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
@@ -175,7 +177,6 @@ public class WorldUtils {
             if (!biomeCategories.contains(category)) {     //conditional only permits overworld spawning
                 genOre(builder, blockstate, veinSize, bottom, top, count);
             }
-//        }
     }
 
     /**
@@ -206,5 +207,103 @@ public class WorldUtils {
         ConfiguredFeature<?, ?> ORE_CANDIANITE = (Feature.ORE.configured(new OreConfiguration(OreConfiguration.Predicates.STONE_ORE_REPLACEABLES, blockstate, veinSize))).rangeUniform(VerticalAnchor.absolute(bottom), VerticalAnchor.absolute(top)).squared().count(count);
         return ORE_CANDIANITE;
     }
+
+    /**
+     * Method to be used in biome loading event to spawn an entity in all biomes
+     * @param category category of biome from loading event
+     * @param spawner the spawner of the biome from loading event
+     * @param mobCategory the category of the mob to be spawned
+     * @param entityType the entity that will be spawned
+     * @param weight how likely that entity is to be spawned
+     * @param min the min amount of entities in a group
+     * @param max the max amount of entities in a group
+     */
+    public static void spawnMobInAllBiomes(Biome.BiomeCategory category, MobSpawnSettings.Builder spawner, MobCategory mobCategory, EntityType entityType, int weight, int min, int max) {
+
+        if (category != Biome.BiomeCategory.THEEND && category != Biome.BiomeCategory.NETHER) {
+            addSpawn(spawner, mobCategory, entityType, weight, min, max);
+        }
+
+    }
+
+    /**
+     * Method to be used in biome loading event to spawn a mob in a list of biomes
+     * @param category category of biome from loading event
+     * @param spawner the spawner of the biome from loading event
+     * @param mobCategory the category of the mob to be spawned
+     * @param entityType the entity that will be spawned
+     * @param weight how likely that entity is to be spawned
+     * @param min the min amount of entities in a group
+     * @param max the max amount of entities in a group
+     * @param biomeCategories categories of biomes to be spawned in
+     */
+    public static void spawnMobInBiomes(Biome.BiomeCategory category, MobSpawnSettings.Builder spawner, MobCategory mobCategory, EntityType entityType, int weight, int min, int max, Biome.BiomeCategory...biomeCategories) {
+        List<Biome.BiomeCategory> biomeList = Arrays.asList(biomeCategories);
+        spawnMobInBiomes(category, spawner, mobCategory, entityType, weight, min, max, biomeList);
+    }
+
+    /**
+     * Private method used internally to help spawn a mob in a list of biomes
+     * @param category category of biome from loading event
+     * @param spawner the spawner of the biome from loading event
+     * @param mobCategory the category of the mob to be spawned
+     * @param entityType the entity that will be spawned
+     * @param weight how likely that entity is to be spawned
+     * @param min the min amount of entities in a group
+     * @param max the max amount of entities in a group
+     * @param biomeCategories categories of biomes to be spawned in
+     */
+    private static void spawnMobInBiomes(Biome.BiomeCategory category, MobSpawnSettings.Builder spawner, MobCategory mobCategory, EntityType entityType, int weight, int min, int max, List<Biome.BiomeCategory> biomeCategories) {
+        biomeCategories.forEach(cat -> {
+            if(category == cat) {
+                addSpawn(spawner, mobCategory, entityType, weight, min, max);
+            }
+        });
+    }
+    /**
+     * Method to be used in biome loading event to spawn a mob in all biomes except a list of biomes
+     * @param category category of biome from loading event
+     * @param spawner the spawner of the biome from loading event
+     * @param mobCategory the category of the mob to be spawned
+     * @param entityType the entity that will be spawned
+     * @param weight how likely that entity is to be spawned
+     * @param min the min amount of entities in a group
+     * @param max the max amount of entities in a group
+     * @param biomeCategories categories of biomes to NOT be spawned in
+     */
+    public static void spawnMobInBiomesExcept(Biome.BiomeCategory category, MobSpawnSettings.Builder spawner, MobCategory mobCategory, EntityType entityType, int weight, int min, int max, Biome.BiomeCategory...biomeCategories) {
+        List<Biome.BiomeCategory> biomeList = Arrays.asList(biomeCategories);
+        spawnMobInBiomesExcept(category, spawner, mobCategory, entityType, weight, min, max, biomeList);
+    }
+
+    /**
+     * Private method used internally to help spawn a mob in all biomes except a list of biomes
+     * @param category category of biome from loading event
+     * @param spawner the spawner of the biome from loading event
+     * @param mobCategory the category of the mob to be spawned
+     * @param entityType the entity that will be spawned
+     * @param weight how likely that entity is to be spawned
+     * @param min the min amount of entities in a group
+     * @param max the max amount of entities in a group
+     * @param biomeCategories categories of biomes to NOT be spawned in
+     */
+    private static void spawnMobInBiomesExcept(Biome.BiomeCategory category, MobSpawnSettings.Builder spawner, MobCategory mobCategory, EntityType entityType, int weight, int min, int max, List<Biome.BiomeCategory> biomeCategories){
+        if (!biomeCategories.contains(category)) {     //conditional only permits overworld spawning
+            addSpawn(spawner, mobCategory, entityType, weight, min, max);
+        }
+    }
+    /**
+     * Method used to spawn an entity in a biome.
+     * @param mobCategory the category of the mob to be spawned
+     * @param entityType the entity that will be spawned
+     * @param weight how likely that entity is to be spawned
+     * @param min the min amount of entities in a group
+     * @param max the max amount of entities in a group
+     */
+    private static void addSpawn(MobSpawnSettings.Builder spawner, MobCategory mobCategory, EntityType entityType, int weight, int min, int max) {
+        MobSpawnSettings.SpawnerData spawnerData = new MobSpawnSettings.SpawnerData(entityType, weight, min, max);
+        spawner.addSpawn(mobCategory, spawnerData);
+    }
+
 }
 
