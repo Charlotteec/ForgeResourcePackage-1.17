@@ -1,6 +1,7 @@
 package com.idtech;
 
 import com.idtech.block.*;
+import com.idtech.enchantment.EnchantmentMod;
 import com.idtech.entity.*;
 import com.idtech.item.*;
 
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -169,6 +171,11 @@ public class BaseMod {
         @SubscribeEvent
         public static void attributeRegister(EntityAttributeCreationEvent event) {
             EntityMod.onAttributeCreate(event);
+        }
+
+        @SubscribeEvent
+        public static void registerEnchantments(final RegistryEvent.Register<Enchantment> event){
+            EnchantmentMod.registerEnchantments(event);
         }
 
     }
