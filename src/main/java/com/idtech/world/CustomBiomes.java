@@ -1,6 +1,8 @@
 package com.idtech.world;
 
 import com.idtech.BaseMod;
+import com.idtech.block.LatteBlock;
+import com.idtech.block.LatteMidBlock;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.Features;
 import net.minecraft.data.worldgen.StructureFeatures;
@@ -36,13 +38,13 @@ public class CustomBiomes {
         BiomeDefaultFeatures.addMossyStoneBlock(biomegenerationsettings$builder);
         BiomeDefaultFeatures.addFerns(biomegenerationsettings$builder);
         BiomeDefaultFeatures.addDefaultFlowers(biomegenerationsettings$builder);
-        BiomeDefaultFeatures.addMountainTrees(biomegenerationsettings$builder);
 
-        // Add more decorations these are for more complicated things? you can look in VanillaBiomes for more
         biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.FOREST_FLOWER_TREES);
         biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.FLOWER_FOREST);
-        biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.DARK_FOREST_VEGETATION_RED);
+        biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.RED_MUSHROOM_NORMAL);
+        biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.MUSHROOM_FIELD_VEGETATION);
         biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, Features.GLOWSTONE_EXTRA);
+        biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.LAKES, Features.LAKE_WATER);
 
         biomegenerationsettings$builder.addStructureStart(StructureFeatures.MINESHAFT);
 
@@ -50,11 +52,11 @@ public class CustomBiomes {
         // You can see what goes on in the WorldUtils file - you can replace this return statement with that but you will
         // have to create your own surface builder so This is probably the simplest.
         return WorldUtils.baseBiome(Biome.BiomeCategory.FOREST,
-                Blocks.GRASS_BLOCK.defaultBlockState(),
-                Blocks.PINK_WOOL.defaultBlockState(),
-                Blocks.PINK_WOOL.defaultBlockState(),
+                LatteBlock.INSTANCE.defaultBlockState(),
+                LatteMidBlock.INSTANCE.defaultBlockState(),
+                LatteMidBlock.INSTANCE.defaultBlockState(),
                 mobspawnsettings$builder, biomegenerationsettings$builder,
-                0.8f, 1.0f, 0.7f, 0.6f, 550204);
+                0.8f, 1.0f, 0.7f, 0.6f, 4159204);
     }
 }
 

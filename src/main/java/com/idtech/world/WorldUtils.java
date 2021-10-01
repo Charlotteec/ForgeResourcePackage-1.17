@@ -1,15 +1,8 @@
 package com.idtech.world;
 
-
-import com.idtech.BaseMod;
-import com.idtech.block.BlockMod;
-import net.minecraft.data.worldgen.Features;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
@@ -19,25 +12,11 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.OreFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
-import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.lwjgl.system.CallbackI;
 
-import java.sql.Struct;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public class WorldUtils {
@@ -68,7 +47,6 @@ public class WorldUtils {
      * @param waterColor the color of the water in the biome.
      * @return A built biome with all the parameters set and any additional mandatory parameters taken care of
      */
-
     public static Biome baseBiome(Biome.BiomeCategory category, BlockState topLayer, BlockState secondLayer, BlockState thirdLayer, MobSpawnSettings.Builder mobspawnsettings$builder, BiomeGenerationSettings.Builder biomegenerationsettings$builder, float depth, float scale, float temp, float downfall, int waterColor) {
         //in 1.17 you have to create this surface configuration to set the blocks but its sort of nedlessly complicated so we will take care of that here.
         SurfaceBuilderBaseConfiguration surface = new SurfaceBuilderBaseConfiguration(topLayer, secondLayer, thirdLayer);
@@ -86,7 +64,50 @@ public class WorldUtils {
                         .waterColor(waterColor)
                         .waterFogColor(waterColor)
                         .fogColor(waterColor)
-                        .skyColor(WorldUtils.calculateSkyColor(0.5f))
+                        .skyColor(WorldUtils.calculateSkyColor(0.7f))
+                        .build())
+                .mobSpawnSettings(mobspawnsettings$builder.build())
+                .generationSettings(biomegenerationsettings$builder.build())
+                .build();
+    }
+
+
+    /**
+     * Function to help create biomes more easily. Look into the VanillaBiomes class for more information on how all this works and examples of how things are done.
+     * @param category the category of the biome to be created
+     * @param topLayer the top layer of the biome (usually just one block tall)
+     * @param secondLayer the second layer of the biome (usually a few blocks tall)
+     * @param thirdLayer the third layer of the biome
+     * @param mobspawnsettings$builder a mob spawn settings builder used to add spawners. You will instantiate this when you create the biome instance in WorldMod
+     * @param biomegenerationsettings$builder a biome generation settings builder used to add spawners. You will instantiate this when you create the biome instance in WorldMod
+     * @param depth the depth of the biome (how tall it is)
+     * @param scale the scale of the biome (how big mountains can be)
+     * @param temp the temperature (has to do with what can grow etc)
+     * @param downfall what kind of weather the biome will have
+     * @param waterColor the color of the water in the biome.
+     * @param waterFogColor the color of the water fog in the biome.
+     * @param fogColor the color of the fog in the biome.
+     * @param skyColor the color of the sky - this will be used in calculateSkyColor.
+     * @return A built biome with all the parameters set and any additional mandatory parameters taken care of
+     */
+    public static Biome baseBiome(Biome.BiomeCategory category, BlockState topLayer, BlockState secondLayer, BlockState thirdLayer, MobSpawnSettings.Builder mobspawnsettings$builder, BiomeGenerationSettings.Builder biomegenerationsettings$builder, float depth, float scale, float temp, float downfall, int waterColor, int waterFogColor, int fogColor, float skyColor) {
+        //in 1.17 you have to create this surface configuration to set the blocks but its sort of nedlessly complicated so we will take care of that here.
+        SurfaceBuilderBaseConfiguration surface = new SurfaceBuilderBaseConfiguration(topLayer, secondLayer, thirdLayer);
+        biomegenerationsettings$builder.surfaceBuilder(SurfaceBuilder.DEFAULT.configured(surface));
+        //you also have to use a builder, so this is a builder set up with the basics of all the essential stuff - if students really
+        // wanna customize past this they can by copy pasting this whole thing and just manually setting everything in here (but its a pain)
+        return (new Biome.BiomeBuilder())
+                .precipitation(Biome.Precipitation.RAIN)
+                .biomeCategory(category)
+                .depth(depth)
+                .scale(scale)
+                .temperature(temp)
+                .downfall(downfall)
+                .specialEffects((new BiomeSpecialEffects.Builder())
+                        .waterColor(waterColor)
+                        .waterFogColor(waterFogColor)
+                        .fogColor(fogColor)
+                        .skyColor(WorldUtils.calculateSkyColor(skyColor))
                         .build())
                 .mobSpawnSettings(mobspawnsettings$builder.build())
                 .generationSettings(biomegenerationsettings$builder.build())

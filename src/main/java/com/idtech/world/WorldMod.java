@@ -2,18 +2,9 @@ package com.idtech.world;
 
 import com.idtech.BaseMod;
 import com.idtech.block.BlockMod;
-import com.idtech.block.CreeperSurpriseBlock;
-import com.idtech.block.RubberBlock;
-import com.idtech.entity.GrumboBoy;
-import com.idtech.entity.LatteChicken;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
@@ -51,12 +42,12 @@ public class WorldMod {
         BiomeGenerationSettingsBuilder builder = event.getGeneration();
         MobSpawnInfoBuilder spawner = event.getSpawns();
 
-        WorldUtils.genOreInBiomesExcept(biomeCategory, builder, CreeperSurpriseBlock.INSTANCE.defaultBlockState(), 10, 12, 99, 250, Biome.BiomeCategory.FOREST);
-        WorldUtils.genOreInAllBiomes(biomeCategory, builder, BlockMod.GEL_ORE_BLOCK.defaultBlockState(), 9, 0, 63, 200);
-        WorldUtils.genOreInBiomes(biomeCategory, builder, RubberBlock.INSTANCE.defaultBlockState(), 9, 0, 63, 200, Biome.BiomeCategory.FOREST);
+        //WorldUtils.genOreInBiomesExcept(biomeCategory, builder, CreeperSurpriseBlock.INSTANCE.defaultBlockState(), 10, 12, 99, 250, Biome.BiomeCategory.FOREST);
+        WorldUtils.genOreInAllBiomes(biomeCategory, builder, BlockMod.GEL_ORE_BLOCK.defaultBlockState(), 9, 0, 63, 50);
+       // WorldUtils.genOreInBiomes(biomeCategory, builder, RubberBlock.INSTANCE.defaultBlockState(), 9, 0, 63, 200, Biome.BiomeCategory.FOREST);
 
-        WorldUtils.spawnMobInAllBiomes(biomeCategory, spawner, MobCategory.MONSTER, LatteChicken.TYPE, 500, 2, 10);
-        WorldUtils.spawnMobInBiomesExcept(biomeCategory, spawner, MobCategory.MONSTER, GrumboBoy.TYPE, 500, 2, 10, Biome.BiomeCategory.FOREST);
-        WorldUtils.spawnMobInBiomes(biomeCategory, spawner, MobCategory.MONSTER, EntityType.CAT, 500, 5, 10, Biome.BiomeCategory.FOREST);
+//        WorldUtils.spawnMobInAllBiomes(biomeCategory, spawner, MobCategory.MONSTER, LatteChicken.TYPE, 500, 2, 10);
+//        WorldUtils.spawnMobInBiomesExcept(biomeCategory, spawner, MobCategory.MONSTER, GrumboBoy.TYPE, 500, 2, 10, Biome.BiomeCategory.FOREST);
+//        WorldUtils.spawnMobInBiomes(biomeCategory, spawner, MobCategory.MONSTER, EntityType.CAT, 500, 5, 10, Biome.BiomeCategory.FOREST);
     }
 }
