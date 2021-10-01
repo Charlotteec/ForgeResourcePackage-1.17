@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "examplemod:lattemidblock"
+          "name": "examplemod:castlewall"
         }
       ],
       "conditions": [
