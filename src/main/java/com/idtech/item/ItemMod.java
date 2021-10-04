@@ -43,6 +43,8 @@ public class ItemMod {
         event.getRegistry().register(GelPickaxeItem.INSTANCE);
         event.getRegistry().register(GelSwordItem.INSTANCE);
         event.getRegistry().register(GelAxeItem.INSTANCE);
+        event.getRegistry().register(CustomWeapon.INSTANCE);
+
 
         // FOOD
         event.getRegistry().register(yummyFoodItem);

@@ -20,6 +20,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -71,6 +72,10 @@ public class BaseMod {
         WorldMod.setupBiomes();
        // TierSortingRegistry.registerTier(ItemMod.GEL_TIER, new ResourceLocation(MODID, "gelore"), List.of(Tiers.NETHERITE), List.of());
 
+        BaseMod.LOGGER.info("Command registration here hopefully.");
+//        MinecraftForge.EVENT_BUS.register(CustomEvent.class);
+//        MinecraftForge.EVENT_BUS.addListener(EventMod::isHoldingEvent);
+        //Adds the RegisterCommandEvent as an event and sets a listener for it during FMLCommonSetup
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
